@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .hole{
+      width: 75px;
+      height: 75px;
+      border: 1px solid black;
+      background: white;
+    }
+    .red{
+      background: red;
+    }
+    .blue{
+      background: blue;
+    }
+    #game{
+      /* cursor:url(檔案路徑)滑鼠X座標 滑鼠Y座標，auto */
+      cursor: url(./cursor_black.png)50 50 ,auto;
+    }
+  </style>
+</head>
+<body>
+<table id="game">
+  <tr>
+    <td class="hole" id="hole7"></td>
+    <td class="hole" id="hole8"></td>
+    <td class="hole" id="hole9"></td>
+  </tr>
+  <tr>
+    <td class="hole" id="hole4"></td>
+    <td class="hole" id="hole5"></td>
+    <td class="hole" id="hole6"></td>
+  </tr>
+  <tr>
+    <td class="hole" id="hole1"></td>
+    <td class="hole" id="hole2"></td>
+    <td class="hole" id="hole3"></td>
+  </tr>
+</table>
+    <input type="button" value="開始遊戲" id="start">
+    <br>
+    目前分數:<span id="score">0</span>
+    <hr>
+    最高分
+    <br>
+    玩家:<span id="highname">???</span>
+    最高分:<span id="highscore"></span>
+    <script>
+      const holes = document.getElementsByClassName('hole')
+      const start =document.getElementById('start')
+      const scoreText=document.getElementById('score')
+      const highnameText=document.getElementById('highname')
+      const highscoreText=document.getElementById('highscore')
+
+      //最高分
+      const high={score:0,name:'???'}
+      //計分
+      let score = 0
+      //計時器
+      let timer=0
+      //音效
+      const audio=new Audio()
+
+      //讀取資料
+      const storage = JSON.parse(localStorage.getItem('dadishu'))
+      //如果有資料
+      if(storage){
+        high.name=storage.name
+        high.score=storage.score
+        //修改最高分，顯示文字
+        highnameText.innerText=high.name
+        highscoreText.innerText=high.score
+      }
+
+      start.onclick=()=>{
+        //停用開始按鈕
+        start.disabled=true
+        //重設分數
+        score=0
+        score.innerText=score
+        //每秒變換一次
+        timer=setInterval(game,1000)
+        game()
+        //十秒遊戲結束
+        setTimeout(end,10*1000)
+      }
+      //每秒變換顏色
+      const game=()=>{
+        for(const hole of holes){
+          //移除顏色
+          hole.classList.remove('red')
+          hole.classList.remove('blue')
+        }
+        //隨機抽三個變換顏色，不考慮重複
+        for(let i =0;i<3;i++){
+          holes[Math.round(Math.random()*(holes.length-1))].classList.add('red')
+        }
+      }
+
+      //遊戲結束
+      const end=()=>{
+        //停止變換顏色
+        clearInterval(timer)
+        //顏色清掉
+        for(const hole of holes){
+          hole.classList.remove('red')
+          hole.classList.remove('blue')
+        }
+        //啟用開始按鈕
+        start.disabled=false
+        //跳出訊息
+        alert(`遊戲結束，你得到${score}分`)
+        //紀錄最高分
+        if(score>high.score){
+          audio.src='./rihai.mp3'
+          audio.play()
+        localStorage.setItem('dadishu','請輸入名字')
+        //請玩家輸入名字
+        const input =prompt('最高分，請輸入名字')
+        //修改最高分變數資料
+        high.score=score
+        high.name=input||'???'
+        //修改最高分顯示文字
+        highnameText.innerText=high.name
+        highscoreText.innerText=high.score
+        //保存
+        //localStorage.setItme(資料名,文字)
+        //變數轉文字:JSON.stringify(變數)
+        localStorage.setItem('dadishu',JSON.stringify(high))
+      }}
+
+      //點擊變色
+      for(const hole of holes){
+        hole.onclick=()=>{
+          //如果點下去時是紅色
+          if(hole.classList.contains('red')){
+            //變藍色
+            hole.classList.replace('red','blue')
+            //加分
+            score++
+            scoreText.innerText=score
+          }
+        }
+      }
+      //數字鍵
+      document.onkeydown=event=>{
+        //按了什麼鍵
+        const key =event.key
+        //如果是數字鍵
+        if(!isNaN(key)){
+          //找到對應的格子
+          const target=document.getElementById(`hole${key}`)
+          //如果有找到
+          if(target&&target.classList.contains('red')){
+            //變為藍色
+            target.classList.replace('red','blue')
+            //加分
+            score++
+            scoreText.innerText=score
+          }
+        }
+      }
+    </script>
+</body>
+</html>

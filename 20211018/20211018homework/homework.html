@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    *,
+    body{
+      height: 100%;
+    }
+    body{
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      display:flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+    }
+  #game{
+    border: 1px solid black;
+    width: 50vh;
+    height: 80vh;
+    background: gray;
+  }
+  .hole{
+    border: 1px solid black;
+    width: 10vh;
+    height: 16vh;
+  }
+  .con{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    background: brown;
+    width: 50vh;
+    height: 5vh;
+  }
+  #start{
+    width: 15%;
+  }
+
+  .col{
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    background: cadetblue;
+    width: 100%;
+    height: 100%;
+  } 
+  .col1{
+    width: 40%;
+  }
+  .col2{
+    width: 40%;
+  }
+  .green{
+    background: url(./green.png)no-repeat center/cover;
+    /* Object-fit:contain; */
+  }
+  .red{
+    background: url(./red.png)no-repeat center/cover;
+    /* Object-fit:contain; */
+  }
+</style>
+</head>
+<body>
+  <table id="game">
+    <tr>
+      <td class="hole" id="hole21"></td>
+      <td class="hole" id="hole22"></td>
+      <td class="hole" id="hole23"></td>
+      <td class="hole" id="hole24"></td>
+      <td class="hole" id="hole25"></td>
+    </tr>
+    <tr>
+      <td class="hole" id="hole16"></td>
+      <td class="hole" id="hole17"></td>
+      <td class="hole" id="hole18"></td>
+      <td class="hole" id="hole19"></td>
+      <td class="hole" id="hole20"></td>
+    </tr>
+    <tr>
+      <td class="hole" id="hole11"></td>
+      <td class="hole" id="hole12"></td>
+      <td class="hole" id="hole13"></td>
+      <td class="hole" id="hole14"></td>
+      <td class="hole" id="hole15"></td>
+    </tr>
+    <tr>
+      <td class="hole" id="hole6"></td>
+      <td class="hole" id="hole7"></td>
+      <td class="hole" id="hole8"></td>
+      <td class="hole" id="hole9"></td>
+      <td class="hole" id="hole10"></td>
+    </tr>
+    <tr>
+      <td class="hole" id="hole1"></td>
+      <td class="hole" id="hole2"></td>
+      <td class="hole" id="hole3"></td>
+      <td class="hole" id="hole4"></td>
+      <td class="hole" id="hole5"></td>
+    </tr>
+  </table>
+    <div class="con">
+    <input type="button" value="開始遊戲" id="start">
+    <div class="con1">目前分數:<span id="score">0</span></div>
+    <div class="col">
+      王者👉
+      <div class="col1">玩家:<span id="highname">???</span></div>
+      <div class="col2">最高分:<span id="highscore"></span></div>
+    </div>
+</div>
+<script>
+  const holes = document.getElementsByClassName('hole')
+      const start =document.getElementById('start')
+      const scoreText=document.getElementById('score')
+      const highnameText=document.getElementById('highname')
+      const highscoreText=document.getElementById('highscore')
+
+      start.onclick=()=>{
+        //停用開始按鈕
+        start.disabled=true
+        //重設分數
+        score=0
+        score.innerText=score
+        //每秒變換一次
+        timer=setInterval(game,500)
+        game()
+        //十秒遊戲結束
+        setTimeout(end,10*1000)
+      }
+      //每秒變換顏色
+      const game=()=>{
+        for(const hole of holes){
+          //移除顏色
+          hole.classList.remove('red')
+          hole.classList.remove('green')
+        }
+        //隨機抽三個變換顏色，不考慮重複
+        for(let i =0;i<2;i++){
+          holes[Math.round(Math.random()*(holes.length-1))].classList.add('red')
+          holes[Math.round(Math.random()*(holes.length-1))].classList.add('green')
+        }
+      }
+</script>
+</body>
+</html>
