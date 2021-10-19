@@ -145,6 +145,34 @@
           holes[Math.round(Math.random()*(holes.length-1))].classList.add('green')
         }
       }
+      //加分、減分
+      for(const hole of holes){
+        hole.onclick=()=>{
+          if(hole.classList.contains('red')){
+            score--
+            scoreText.innerText=score
+          }else if(hole.classList.contains('green')){
+            score++
+            scoreText.innerText=score
+          }
+        }
+      }
+
+      //遊戲停止
+      const end=()=>{
+        //停止變換顏色
+        clearInterval(timer)
+        //顏色清掉
+        for(const hole of holes){
+          hole.classList.remove('red')
+          hole.classList.remove('green')
+        }
+        //啟用開始按鈕
+        start.disabled=false
+        //跳出訊息
+        alert(`遊戲結束，你得到${score}分`)
+      }
+
 </script>
 </body>
 </html>
