@@ -64,6 +64,15 @@
     background: url(./red.png)no-repeat center/cover;
     /* Object-fit:contain; */
   }
+  .angery{
+    background: url(./angery.png)no-repeat center/cover;
+  }
+  .wow{
+    background: url(./wow.png)no-repeat center/cover;
+  }
+  .boom{
+    background: url(./boom.png)no-repeat center/cover;
+  }
 </style>
 </head>
 <body>
@@ -127,7 +136,7 @@
         score=0
         score.innerText=score
         //每秒變換一次
-        timer=setInterval(game,500)
+        timer=setInterval(game,5000)
         game()
         //十秒遊戲結束
         setTimeout(end,10*1000)
@@ -138,22 +147,45 @@
           //移除顏色
           hole.classList.remove('red')
           hole.classList.remove('green')
+          hole.classList.remove('wow')
+          hole.classList.remove('angery')
+          hole.classList.remove('boom')
         }
         //隨機抽三個變換顏色，不考慮重複
         for(let i =0;i<2;i++){
           holes[Math.round(Math.random()*(holes.length-1))].classList.add('red')
           holes[Math.round(Math.random()*(holes.length-1))].classList.add('green')
         }
+        for(let j=0;j<=0;j++){
+          holes[Math.round(Math.random()*(holes.length-1))].classList.add('boom')
+        }
       }
-      //加分、減分
+
+      
+      //加分、減分、換圖
       for(const hole of holes){
         hole.onclick=()=>{
           if(hole.classList.contains('red')){
+            hole.classList.replace('red','angery')
             score--
             scoreText.innerText=score
           }else if(hole.classList.contains('green')){
+            hole.classList.replace('green','wow')
             score++
             scoreText.innerText=score
+          }else if(hole.classList.contains('boom')){
+            clearInterval(timer)
+            score=0
+            scoreText.innerText=score
+            for(const hole of holes){
+          hole.classList.remove('red')
+          hole.classList.remove('green')
+          hole.classList.remove('wow')
+          hole.classList.remove('angery')
+          hole.classList.remove('boom')
+        }
+        start.disabled=false
+        alert(`基廉列克已爆走，請盡速逃命`)
           }
         }
       }
@@ -166,12 +198,16 @@
         for(const hole of holes){
           hole.classList.remove('red')
           hole.classList.remove('green')
+          hole.classList.remove('wow')
+          hole.classList.remove('angery')
+          hole.classList.remove('boom')
         }
         //啟用開始按鈕
         start.disabled=false
         //跳出訊息
         alert(`遊戲結束，你得到${score}分`)
       }
+
 
 </script>
 </body>
