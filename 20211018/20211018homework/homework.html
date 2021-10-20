@@ -18,12 +18,14 @@
       justify-content: center;
       align-items: center;
       flex-direction: column;
+      background: url(./下載.jfif)no-repeat center/cover; 
     }
   #game{
     border: 1px solid black;
     width: 50vh;
     height: 80vh;
-    background: gray;
+    background: url(./huiseqiangbibeijing-36953336_3.jpg) no-repeat center/cover;
+    cursor: url(../cursor_black.png)50 50 ,auto;
   }
   .hole{
     border: 1px solid black;
@@ -32,29 +34,67 @@
   }
   .con{
     display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
+    flex-direction: column;
+    /* flex-wrap: wrap; */
     background: brown;
     width: 50vh;
     height: 5vh;
   }
+  .startcon{
+    display: flex;
+    flex-direction: row;
+    /* flex-wrap: wrap; */
+    width: 100%;
+    height: 50%;
+    background: purple;
+    position: relative;
+  }
   #start{
-    width: 15%;
+    width: 20%;
+    height: 100%;
+  }
+  .con1{
+    width: 80%;
+    height: 100%;
+    background: royalblue;
+    position: absolute;
+    right: 0;
   }
 
   .col{
     display: flex;
-    flex-direction: column;
-    flex-wrap: wrap;
+    flex-direction: row;
+    /* flex-wrap: wrap; */
     background: cadetblue;
     width: 100%;
-    height: 100%;
+    height: 50%;
   } 
-  .col1{
+  .col >div:nth-child(1){
+    text-align: center;
+    width: 20%;
+  }
+  .col >div:nth-child(2){
     width: 40%;
   }
-  .col2{
+  .col>div:nth-child(3){
     width: 40%;
+  }
+  .colsp{
+    display: flex;
+    flex-direction: row;
+    background: purple;
+  }
+  .colsp>div:nth-child(1){
+    text-align: center;
+    width: 20%;
+    background: red;
+  }
+  .colsp>div{
+    width: 80%;
+    background: pink;
+  }
+  .del{
+    display: none;
   }
   .green{
     background: url(./green.png)no-repeat center/cover;
@@ -114,12 +154,18 @@
     </tr>
   </table>
     <div class="con">
+      <div class="startcon">
     <input type="button" value="開始遊戲" id="start">
     <div class="con1">目前分數:<span id="score">0</span></div>
+    </div>
     <div class="col">
-      王者👉
-      <div class="col1">玩家:<span id="highname">???</span></div>
-      <div class="col2">最高分:<span id="highscore"></span></div>
+      <div>王者👉</div>
+      <div>玩家:<span id="highname">???</span></div>
+      <div>最高分:<span id="highscore"></span></div>
+    </div>
+    <div id="dd" class="colsp del">
+      <div>死亡名單🙏</div>
+      <div>死者姓名:<span id="dead">???</span></div>
     </div>
 </div>
 <script>
@@ -128,15 +174,50 @@
       const scoreText=document.getElementById('score')
       const highnameText=document.getElementById('highname')
       const highscoreText=document.getElementById('highscore')
+      const deadText=document.getElementById('dead')
+      const dd=document.getElementById('dd')
+
+      //最高分
+      const high={score:0,name:'???'}
+      //紀錄點到boom
+      const bom={score:-999,name:'???'}
+      //計分
+      let score = 0
+      //計時器
+      let timer=0
+
+      //讀取資料
+      const storage = JSON.parse(localStorage.getItem('rabbit'))
+      //如果有資料
+      if(storage){
+        high.name=storage.name
+        high.score=storage.score
+        //修改最高分，顯示文字
+        highnameText.innerText=high.name
+        highscoreText.innerText=high.score
+      }
+
+      //讀取資料
+      const redrabbit = JSON.parse(localStorage.getItem('redrabbit'))
+      //如果有資料
+      if(redrabbit){
+        bom.name=redrabbit.name
+        bom.score=redrabbit.score
+        //修改最高分，顯示文字
+        highnameText.innerText=high.name
+        highscoreText.innerText=high.score
+      }
 
       start.onclick=()=>{
         //停用開始按鈕
         start.disabled=true
         //重設分數
         score=0
-        score.innerText=score
+        scoreText.innerText=score
+        //隱藏
+        dd.classList.add('del')
         //每秒變換一次
-        timer=setInterval(game,5000)
+        timer=setInterval(game,500)
         game()
         //十秒遊戲結束
         setTimeout(end,10*1000)
@@ -175,7 +256,7 @@
             scoreText.innerText=score
           }else if(hole.classList.contains('boom')){
             clearInterval(timer)
-            score=0
+            score=-999
             scoreText.innerText=score
             for(const hole of holes){
           hole.classList.remove('red')
@@ -206,7 +287,38 @@
         start.disabled=false
         //跳出訊息
         alert(`遊戲結束，你得到${score}分`)
+
+        if(score>high.score){
+        localStorage.setItem('rabbit','請輸入名字')
+        //請玩家輸入名字
+        const input =prompt('最高分，請輸入名字')
+        //修改最高分變數資料
+        high.score=score
+        high.name=input||'???'
+        //修改最高分顯示文字
+        highnameText.innerText=high.name
+        highscoreText.innerText=high.score
+        //保存
+        //localStorage.setItme(資料名,文字)
+        //變數轉文字:JSON.stringify(變數)
+        localStorage.setItem('rabbit',JSON.stringify(high))
       }
+
+      if(score==bom.score){
+        localStorage.setItem('redrabbit','請輸入名字')
+        //請玩家輸入名字
+        const input =prompt('請輸入死者姓名')
+        //修改最高分變數資料
+        dead.name=input||'???'
+        //修改最高分顯示文字
+        deadText.innerText=dead.name
+        //保存
+        //localStorage.setItme(資料名,文字)
+        //變數轉文字:JSON.stringify(變數)
+        localStorage.setItem('redrabbit',JSON.stringify(bom))
+        dd.classList.remove('del')
+      }
+    }
 
 
 </script>
