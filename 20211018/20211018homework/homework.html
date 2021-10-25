@@ -334,25 +334,17 @@
 
     //讀取資料
     const storage = JSON.parse(localStorage.getItem('rabbit'))
-    //如果有資料
-    if (storage) {
-      high.name = storage.name
-      high.score = storage.score
-      //修改最高分，顯示文字
-      highnameText.innerText = high.name
-      highscoreText.innerText = high.score
-    }
-
-    //讀取資料
     const redrabbit = JSON.parse(localStorage.getItem('redrabbit'))
     //如果有資料
-    if (redrabbit) {
-      bom.name = redrabbit.name
-      bom.score = redrabbit.score
-      //修改最高分，顯示文字
-      highnameText.innerText = high.name
-      highscoreText.innerText = high.score
-    }
+    if(storage){
+        high.name=storage.name
+        high.score=storage.score
+        //修改最高分，顯示文字
+        highnameText.innerText=high.name
+        highscoreText.innerText=high.score
+      }
+
+
 
     start.onclick = () => {
       //停用開始按鈕
@@ -479,9 +471,9 @@
         localStorage.setItem('redrabbit', '請輸入名字')
         //請玩家輸入名字
         const input = prompt('請輸入死者姓名')
-        //修改最高分變數資料
+        //修改死者變數資料
         dead.name = input || '???'
-        //修改最高分顯示文字
+        //修改死者分數顯示文字
         deadText.innerText = dead.name
         //保存
         //localStorage.setItme(資料名,文字)
