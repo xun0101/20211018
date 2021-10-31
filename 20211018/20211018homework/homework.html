@@ -317,6 +317,7 @@
     const gun=document.getElementById('gun')
     const bonk=document.getElementById('bonk')
     const gAme=document.getElementById('game')
+    const audio=new Audio()
 
 
     //選武器
@@ -360,6 +361,9 @@
       scoreText.innerText = score
       //隱藏
       dd.classList.add('del')
+      //音效
+      audio.src='./dance time.mp3'
+      audio.play()
       //每半秒變換一次
       timer = setInterval(game, 500)
       game()
