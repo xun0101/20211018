@@ -207,7 +207,7 @@
       left: 15%;
     }
     .le:nth-child(6){
-      right: 0;
+      right: 10%;
     }
 
     .ch input:hover {
@@ -219,11 +219,17 @@
     #shoe:hover+.le {
       display: block;
     }
+    .mb{
+      color: white;
+      text-align: center;
+      line-height: 115;
+    }
+
   </style>
 </head>
 
 <body>
-  <div class="mb"></div>
+  <div class="mb">圖片版權歸日本MTV台所有</div>
   <div class="center">
     <table id="game" class="game1">
       <tr>
@@ -292,7 +298,7 @@
         <p>兇萌的柴柴一棍就能把普丁打到骨折了。</p>
         <img src="./bonk.png">
       </div>
-      <input id="shoe" type="button" name="arms" value="基廉列克的摯愛" onclick="alert('欲使用此功能，請先打賞創作者')">
+      <input id="shoe" type="button" name="arms" value="基廉列克的摯愛" onclick="alert('此功能尚在開發中')">
       <div class="le">
         <p>被最愛的帆布鞋打到，基廉列克好像沒那麼生氣耶。</p>
         <img src="./shoe-5.png">
@@ -354,8 +360,8 @@
       scoreText.innerText = score
       //隱藏
       dd.classList.add('del')
-      //每秒變換一次
-      timer = setInterval(game, 5000)
+      //每半秒變換一次
+      timer = setInterval(game, 500)
       game()
       //十秒遊戲結束
       setTimeout(end, 10 * 1000)
